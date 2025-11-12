@@ -451,72 +451,74 @@
     }, 2000);
   });
 
-  // パララックス
-  const char = document.getElementById("character");
-  document.addEventListener("mousemove", e => {
-    const x = (window.innerWidth / 2 - e.pageX) / 30;
-    const y = (window.innerHeight / 2 - e.pageY) / 30;
-    char.style.transform = `rotateX(${y}deg) rotateY(${-x}deg)`;
+  // DOM読み込み後にヘッダー制御やパララックスを設定
+  document.addEventListener("DOMContentLoaded", () => {
+
+    // パララックス
+    const char = document.getElementById("character");
+    document.addEventListener("mousemove", e => {
+      const x = (window.innerWidth / 2 - e.pageX) / 30;
+      const y = (window.innerHeight / 2 - e.pageY) / 30;
+      char.style.transform = `rotateX(${y}deg) rotateY(${-x}deg)`;
+    });
+
+    // 星アニメーション
+    function createStar() {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = Math.random() * 100 + "%";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.setProperty("--x", (Math.random() * 200 - 100) + "px");
+      star.style.setProperty("--y", (Math.random() * 200 - 100) + "px");
+      document.body.appendChild(star);
+      setTimeout(() => star.remove(), 5000);
+    }
+    setInterval(createStar, 100);
+
+    // 立ち絵切り替え（スペースキー＋自動）
+    const images = [
+      "https://i.imgur.com/racR2uT.png",
+      "https://i.imgur.com/9TAtXqB.png"
+    ];
+    let index = 0;
+    const noise = document.getElementById("noise");
+
+    function changeImage() {
+      noise.style.opacity = 1;
+      setTimeout(() => {
+        index = (index + 1) % images.length;
+        char.src = images[index];
+        setTimeout(() => noise.style.opacity = 0, 300);
+      }, 200);
+    }
+
+    document.addEventListener("keydown", e => {
+      if(e.code === "Space") changeImage();
+    });
+
+    setInterval(changeImage, 10000);
+
+    // ヘッダー隠す制御
+    let lastScroll = 0;
+    const header = document.querySelector("header");
+    if (header) {
+      window.addEventListener("scroll", () => {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > lastScroll && currentScroll > 100) {
+          header.classList.add("hide");
+        } else {
+          header.classList.remove("hide");
+        }
+        lastScroll = currentScroll;
+      });
+    }
+
   });
-
-  // 星アニメーション
-  function createStar() {
-    const star = document.createElement("div");
-    star.classList.add("star");
-    star.style.top = Math.random() * 100 + "%";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.setProperty("--x", (Math.random() * 200 - 100) + "px");
-    star.style.setProperty("--y", (Math.random() * 200 - 100) + "px");
-    document.body.appendChild(star);
-    setTimeout(() => star.remove(), 5000);
-  }
-  setInterval(createStar, 100);
-
-  // 立ち絵切り替え（スペースキー＋自動）
-  const images = [
-    "https://i.imgur.com/racR2uT.png",
-    "https://i.imgur.com/9TAtXqB.png"
-  ];
-  let index = 0;
-  const noise = document.getElementById("noise");
-
-  function changeImage() {
-    noise.style.opacity = 1;
-    setTimeout(() => {
-      index = (index + 1) % images.length;
-      char.src = images[index];
-      setTimeout(() => noise.style.opacity = 0, 300);
-    }, 200);
-  }
-
-  document.addEventListener("keydown", e => {
-    if(e.code === "Space") changeImage();
-  });
-
-  setInterval(changeImage, 10000);
-
-
-let lastScroll = 0;
-const header = document.querySelector("header");
-
-window.addEventListener("scroll", () => {
-  const currentScroll = window.pageYOffset;
-  
-  if (currentScroll > lastScroll && currentScroll > 100) {
-    // 下にスクロール → ヘッダー隠す
-    header.classList.add("hide");
-  } else {
-    // 上にスクロール → ヘッダー表示
-    header.classList.remove("hide");
-  }
-  
-  lastScroll = currentScroll;
-});
-
-
 </script>
+
 
 </body>
 </html>
+
 
 
