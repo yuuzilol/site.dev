@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お湯つ鯖 | 公式サイト</title>
+    <link rel="icon" href="https://i.postimg.cc/J7GpPTTq/2025-11-30-17-10-42.webp">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 基本設定 --- */
+        :root {
+            --primary-color: #e67e22; /* 温かみのあるオレンジ */
+            --secondary-color: #3498db; /* お湯の青 */
+            --dark-bg: #2c3e50; /* 深い紺色 */
+            --light-bg: #fdfaf6; /* わずかに温かい白 */
+            --card-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Noto Sans JP', sans-serif; 
+            line-height: 1.8; 
+            color: #444; 
+            background-color: var(--light-bg); 
+            overflow-x: hidden; 
+        }
+
+        /* ヘッダー */
+        header {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 0.8rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .logo { 
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.6rem; 
+            color: white; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--primary-color); }
+        
+        nav ul { display: flex; list-style: none; }
+        nav ul li a { color: white; text-decoration: none; margin-left: 25px; transition: 0.3s; font-size: 0.95rem; font-weight: bold; }
+        nav ul li a:hover { color: var(--primary-color); }
+
+        /* --- スライダー --- */
+        .slider-container {
+            position: relative;
+            height: 90vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1.5s ease-in-out; z-index: 1;
+        }
+        .slide.active { opacity: 1; }
+        .slide::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+        }
+
+        .hero-content { position: relative; z-index: 10; padding: 0 20px; }
+        .hero-content h1 { 
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: clamp(2.2rem, 7vw, 4rem); 
+            margin-bottom: 1.5rem; 
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6); 
+        }
+        .hero-content p { font-size: 1.2rem; font-weight: 500; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+
+        /* IPボックス */
+        .ip-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 12px 30px;
+            border-radius: 100px;
+            border: 2px solid white;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 3rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .ip-text { font-family: 'Consolas', monospace; font-size: 1.3rem; margin-right: 20px; font-weight: bold; }
+        .copy-btn {
+            background: var(--primary-color);
+            border: none; color: white; padding: 10px 25px; cursor: pointer;
+            border-radius: 50px; font-weight: bold; transition: 0.3s;
+        }
+        .copy-btn:hover { background: #d35400; transform: translateY(-2px); }
+
+        /* コンテンツエリア */
+        .container { max-width: 1000px; margin: 6rem auto; padding: 0 20px; }
+        h2 { 
+            text-align: center; margin-bottom: 4rem; font-size: 2.2rem; 
+            font-family: 'M PLUS Rounded 1c', sans-serif; color: var(--dark-bg);
+        }
+        h2::after { content: ''; display: block; width: 60px; height: 5px; background: var(--primary-color); margin: 15px auto; border-radius: 10px; }
+
+        .card { 
+            background: white; padding: 50px 40px; border-radius: 30px; 
+            box-shadow: var(--card-shadow); text-align: center;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .card h3 { color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.8rem; }
+
+        /* SNSエリア */
+        .sns-grid { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; }
+        .sns-icon {
+            width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;
+            border-radius: 20px; font-size: 2rem; color: white; transition: 0.4s; text-decoration: none;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .sns-icon:hover { transform: translateY(-8px) rotate(5deg); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
+        .youtube { background: #ff0000; }
+        .x-twitter { background: #000000; }
+        .email-icon { background: var(--secondary-color); }
+
+        .mail-list { 
+            text-align: left; display: inline-block; width: 100%; max-width: 500px;
+            background: #f9f9f9; padding: 25px; border-radius: 20px; border-left: 5px solid var(--secondary-color);
+        }
+        .mail-item { margin-bottom: 15px; }
+        .mail-label { font-size: 0.85rem; color: #888; display: block; }
+        .mail-link { font-family: 'Consolas', monospace; color: var(--secondary-color); text-decoration: none; font-weight: bold; font-size: 1.1rem; }
+
+        footer { background: var(--dark-bg); color: #bdc3c7; text-align: center; padding: 4rem 0; }
+        
+        /* スライダー矢印 */
+        .slider-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.1); color: white; border: none;
+            width: 60px; height: 60px; border-radius: 50%; cursor: pointer; z-index: 20;
+            font-size: 1.2rem; transition: 0.3s;
+        }
+        .slider-btn:hover { background: var(--primary-color); }
+        .prev { left: 20px; } .next { right: 20px; }
+
+        /* ドット */
+        .dots { position: absolute; bottom: 40px; display: flex; gap: 12px; z-index: 20; }
+        .dot { width: 12px; height: 12px; background: rgba(255,255,255,0.4); cursor: pointer; border-radius: 50%; transition: 0.3s; }
+        .dot.active { background: var(--primary-color); width: 30px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><i class="fa-solid fa-hot-tub-person"></i> お湯つ鯖/<span>oyutu server</span></div>
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#features">FEATURES</a></li>
+                <li><a href="#rules">INFO</a></li>
+                <li><a href="#sns">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="slider-container">
+        <div class="slide active" style="background-image: url('https://i.postimg.cc/J7GpPTTq/2025-11-30-17-10-42.webp');"></div>
+        <div class="slide" style="background-image: url('https://i.postimg.cc/PrcJ1qCp/2025-11-28-16-09-30.webp');"></div>
+
+        <button class="slider-btn prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="slider-btn next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+
+        <div class="hero-content">
+            <h1>ようこそ、♨️ お湯つ鯖 ♨️へ。</h1>
+            <p>Mod × 生活 × 街づくり。ここから、あなたの物語が始まる。</p>
+            
+            <div class="ip-box">
+                <span class="ip-text" id="serverIP">play.oyutu.f5.si</span>
+                <button class="copy-btn" onclick="copyIP()">IPをコピー</button>
+            </div>
+        </div>
+
+        <div class="dots">
+            <div class="dot active" onclick="currentSlide(0)"></div>
+            <div class="dot" onclick="currentSlide(1)"></div>
+        </div>
+    </section>
+
+    <section id="features" class="container">
+        <h2><i class="fa-solid fa-map-location-dot"></i> サーバーの魅力</h2>
+        <div class="card">
+            <h3>自由と経営のオープンワールド</h3>
+            <p style="text-align: left; max-width: 700px; margin: 0 auto;">
+                “生活” “経営” “街づくり” が絡み合う奥深い世界へようこそ。<br><br>
+                ここでは誰もが <strong>開拓者</strong>。資源を集め、建物を築き、やがては自分の街を動かす <strong>市長</strong> へ。
+                職人として技術を極めるか、商人として富を築くか。あなたの選択がこの世界の歴史になります。
+            </p>
+        </div>
+    </section>
+
+    <section id="rules" class="container">
+        <h2><i class="fa-solid fa-circle-info"></i> 基本ルール</h2>
+        <div class="card">
+            <ul style="text-align: left; display: inline-block; list-style: none; font-size: 1.1rem;">
+                <li style="margin-bottom: 10px;"><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> 暴言・誹謗中傷の禁止</li>
+                <li style="margin-bottom: 10px;"><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> 他人の建築物を壊さない（窃盗禁止）</li>
+                <li style="margin-bottom: 10px;"><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> サーバーに負荷をかける装置の禁止</li>
+                <li><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> 運営の指示に従うこと</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="sns" class="container">
+        <h2><i class="fa-solid fa-share-nodes"></i> SNS & Contact</h2>
+        <div class="card">
+            <div class="sns-grid">
+                <a href="あなたのYoutubeチャンネルURL" target="_blank" class="sns-icon youtube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://x.com/ouyutu?s=21" target="_blank" class="sns-icon x-twitter">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="mailto:gosika.ichu@gmail.com" class="sns-icon email-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+            </div>
+            
+            <div class="mail-list">
+                <div class="mail-item">
+                    <span class="mail-label"><i class="fa-solid fa-user"></i> 個人用お問い合わせ</span>
+                    <a href="mailto:gosika.ichu@gmail.com" class="mail-link">gosika.ichu@gmail.com</a>
+                </div>
+                <div class="mail-item" style="margin-bottom: 0;">
+                    <span class="mail-label"><i class="fa-solid fa-briefcase"></i> 仕事用お問い合わせ</span>
+                    <a href="mailto:binchou0343@gmail.com" class="mail-link">binchou0343@gmail.com</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 お湯つ鯖 Project.</p>
+        <p style="font-size: 0.8rem; color: #7f8c8d; margin-top: 15px;">NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG.</p>
+    </footer>
+
+    <script>
+        /* --- スライダー制御 --- */
+        let currentIdx = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            if (index >= slides.length) currentIdx = 0;
+            else if (index < 0) currentIdx = slides.length - 1;
+            else currentIdx = index;
+
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+
+            slides[currentIdx].classList.add('active');
+            dots[currentIdx].classList.add('active');
+        }
+
+        function changeSlide(n) { showSlide(currentIdx + n); }
+        function currentSlide(n) { showSlide(n); }
+
+        setInterval(() => { changeSlide(1); }, 6000);
+
+        /* --- IPコピー機能 --- */
+        function copyIP() {
+            const ipText = document.getElementById('serverIP').innerText;
+            navigator.clipboard.writeText(ipText).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerText = 'コピーしました！';
+                btn.style.background = '#27ae60';
+                setTimeout(() => { 
+                    btn.innerText = 'IPをコピー'; 
+                    btn.style.background = '#e67e22';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
