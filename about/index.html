@@ -3,296 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お湯つ鯖 | 公式サイト</title>
-    <link rel="icon" href="https://i.postimg.cc/J7GpPTTq/2025-11-30-17-10-42.webp">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
-
+    <title>Yuuzi.DEV // PORTFOLIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet">
     <style>
-        /* --- 基本設定 --- */
         :root {
-            --primary-color: #e67e22; /* 温かみのあるオレンジ */
-            --secondary-color: #3498db; /* お湯の青 */
-            --dark-bg: #2c3e50; /* 深い紺色 */
-            --light-bg: #fdfaf6; /* わずかに温かい白 */
-            --card-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            --bg: #0d1117;
+            --accent-cyan: #00f2ff;
+            --accent-pink: #ff00c8;
+            --card-bg: #161b22;
+            --border: #30363d;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Noto Sans JP', sans-serif; 
-            line-height: 1.8; 
-            color: #444; 
-            background-color: var(--light-bg); 
-            overflow-x: hidden; 
-        }
-
-        /* ヘッダー */
-        header {
-            background: rgba(44, 62, 80, 0.95);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 0.8rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 3px solid var(--primary-color);
-        }
-        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .logo { 
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: 1.6rem; 
-            color: white; 
+        body {
+            background-color: var(--bg);
+            
+            background-image: radial-gradient(#30363d 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #c9d1d9;
+            font-family: 'Fira Code', sans-serif;
+            margin: 0;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            justify-content: center;
         }
-        .logo span { color: var(--primary-color); }
-        
-        nav ul { display: flex; list-style: none; }
-        nav ul li a { color: white; text-decoration: none; margin-left: 25px; transition: 0.3s; font-size: 0.95rem; font-weight: bold; }
-        nav ul li a:hover { color: var(--primary-color); }
 
-        /* --- スライダー --- */
-        .slider-container {
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            padding: 80px 0;
+        }
+
+        header { text-align: center; margin-bottom: 60px; }
+
+        .glitch-wrapper {
             position: relative;
-            height: 90vh;
-            width: 100%;
-            overflow: hidden;
+            display: inline-block;
+        }
+
+        .glitch-title {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glitch-title::before, .glitch-title::after {
+            content: "Yuuzi.DEV";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch-title::before {
+            color: var(--accent-pink);
+            z-index: -1;
+            animation: glitch-anim 0.3s infinite linear alternate-reverse;
+            left: 3px;
+            clip-path: inset(10% 0 10% 0);
+        }
+
+        .glitch-title::after {
+            color: var(--accent-cyan);
+            z-index: -2;
+            animation: glitch-anim 0.2s infinite linear alternate;
+            left: -3px;
+            clip-path: inset(50% 0 20% 0);
+        }
+
+        @keyframes glitch-anim {
+            0% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, -1px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, 1px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, -2px); }
+            100% { clip-path: inset(30% 0 40% 0); transform: translate(1px, 2px); }
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            border: 1.5px solid var(--accent-cyan);
+            padding: 5px 20px;
+            border-radius: 30px;
+            color: var(--accent-cyan);
+            background: rgba(0, 242, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
+        }
+
+      
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 15px; right: 15px;
+            width: 14px; height: 14px;
+            border: 1px solid #444;
+            opacity: 0.5;
+        }
+
+        .card-header {
+            color: var(--accent-cyan);
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body { font-size: 0.85rem; line-height: 1.7; color: #8b949e; }
+
+        .skin-frame {
+            float: left;
+            width: 110px;
+            height: 110px;
+            border: 2px solid var(--accent-cyan);
+            margin-right: 20px;
+            background: #0d1117;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            text-align: center;
         }
-        .slide {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover; background-position: center;
-            opacity: 0; transition: opacity 1.5s ease-in-out; z-index: 1;
-        }
-        .slide.active { opacity: 1; }
-        .slide::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
-        }
+        .skin-frame img { width: 90%; image-rendering: pixelated; }
 
-        .hero-content { position: relative; z-index: 10; padding: 0 20px; }
-        .hero-content h1 { 
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            font-size: clamp(2.2rem, 7vw, 4rem); 
-            margin-bottom: 1.5rem; 
-            text-shadow: 0 4px 15px rgba(0,0,0,0.6); 
-        }
-        .hero-content p { font-size: 1.2rem; font-weight: 500; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
-
-        /* IPボックス */
-        .ip-box {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            padding: 12px 30px;
-            border-radius: 100px;
-            border: 2px solid white;
-            display: inline-flex;
+        .slot-container { display: flex; gap: 10px; margin-top: 15px; }
+        .slot {
+            width: 50px; height: 50px;
+            border: 1.5px solid var(--accent-cyan);
+            background: rgba(0, 242, 255, 0.05);
+            display: flex;
             align-items: center;
-            margin-top: 3rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            justify-content: center;
+            color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+            font-weight: bold;
+            cursor: pointer;
         }
-        .ip-text { font-family: 'Consolas', monospace; font-size: 1.3rem; margin-right: 20px; font-weight: bold; }
-        .copy-btn {
-            background: var(--primary-color);
-            border: none; color: white; padding: 10px 25px; cursor: pointer;
-            border-radius: 50px; font-weight: bold; transition: 0.3s;
-        }
-        .copy-btn:hover { background: #d35400; transform: translateY(-2px); }
 
-        /* コンテンツエリア */
-        .container { max-width: 1000px; margin: 6rem auto; padding: 0 20px; }
-        h2 { 
-            text-align: center; margin-bottom: 4rem; font-size: 2.2rem; 
-            font-family: 'M PLUS Rounded 1c', sans-serif; color: var(--dark-bg);
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            font-size: 0.8rem;
+            color: #484f58;
         }
-        h2::after { content: ''; display: block; width: 60px; height: 5px; background: var(--primary-color); margin: 15px auto; border-radius: 10px; }
 
-        .card { 
-            background: white; padding: 50px 40px; border-radius: 30px; 
-            box-shadow: var(--card-shadow); text-align: center;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-        .card h3 { color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.8rem; }
-
-        /* SNSエリア */
-        .sns-grid { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; }
-        .sns-icon {
-            width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;
-            border-radius: 20px; font-size: 2rem; color: white; transition: 0.4s; text-decoration: none;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-        .sns-icon:hover { transform: translateY(-8px) rotate(5deg); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
-        .youtube { background: #ff0000; }
-        .x-twitter { background: #000000; }
-        .email-icon { background: var(--secondary-color); }
-
-        .mail-list { 
-            text-align: left; display: inline-block; width: 100%; max-width: 500px;
-            background: #f9f9f9; padding: 25px; border-radius: 20px; border-left: 5px solid var(--secondary-color);
-        }
-        .mail-item { margin-bottom: 15px; }
-        .mail-label { font-size: 0.85rem; color: #888; display: block; }
-        .mail-link { font-family: 'Consolas', monospace; color: var(--secondary-color); text-decoration: none; font-weight: bold; font-size: 1.1rem; }
-
-        footer { background: var(--dark-bg); color: #bdc3c7; text-align: center; padding: 4rem 0; }
-        
-        /* スライダー矢印 */
-        .slider-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.1); color: white; border: none;
-            width: 60px; height: 60px; border-radius: 50%; cursor: pointer; z-index: 20;
-            font-size: 1.2rem; transition: 0.3s;
-        }
-        .slider-btn:hover { background: var(--primary-color); }
-        .prev { left: 20px; } .next { right: 20px; }
-
-        /* ドット */
-        .dots { position: absolute; bottom: 40px; display: flex; gap: 12px; z-index: 20; }
-        .dot { width: 12px; height: 12px; background: rgba(255,255,255,0.4); cursor: pointer; border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: var(--primary-color); width: 30px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
+<div class="container">
     <header>
-        <nav>
-            <div class="logo"><i class="fa-solid fa-hot-tub-person"></i> お湯つ鯖/<span>oyutu server</span></div>
-            <ul>
-                <li><a href="#home">HOME</a></li>
-                <li><a href="#features">FEATURES</a></li>
-                <li><a href="#rules">INFO</a></li>
-                <li><a href="#sns">CONTACT</a></li>
-            </ul>
-        </nav>
+        <div class="status-badge">● SYSTEM ONLINE: MC_SERVER_RUNNING</div>
+        <div class="glitch-wrapper">
+            <h1 class="glitch-title">Yuuzi.DEV</h1>
+        </div>
+        <p style="color: #8b949e; margin-top: 10px;">> Minecraft Server Admin / Frontant Developer</p>
     </header>
 
-    <section id="home" class="slider-container">
-        <div class="slide active" style="background-image: url('https://i.postimg.cc/J7GpPTTq/2025-11-30-17-10-42.webp');"></div>
-        <div class="slide" style="background-image: url('https://i.postimg.cc/PrcJ1qCp/2025-11-28-16-09-30.webp');"></div>
-
-        <button class="slider-btn prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-        <button class="slider-btn next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
-
-        <div class="hero-content">
-            <h1>ようこそ、♨️ お湯つ鯖 ♨️へ。</h1>
-            <p>Mod × 生活 × 街づくり。ここから、あなたの物語が始まる。</p>
-            
-            <div class="ip-box">
-                <span class="ip-text" id="serverIP">play.oyutu.f5.si</span>
-                <button class="copy-btn" onclick="copyIP()">IPをコピー</button>
-            </div>
-        </div>
-
-        <div class="dots">
-            <div class="dot active" onclick="currentSlide(0)"></div>
-            <div class="dot" onclick="currentSlide(1)"></div>
-        </div>
-    </section>
-
-    <section id="features" class="container">
-        <h2><i class="fa-solid fa-map-location-dot"></i> サーバーの魅力</h2>
+    <div class="grid">
         <div class="card">
-            <h3>自由と経営のオープンワールド</h3>
-            <p style="text-align: left; max-width: 700px; margin: 0 auto;">
-                “生活” “経営” “街づくり” が絡み合う奥深い世界へようこそ。<br><br>
-                ここでは誰もが <strong>開拓者</strong>。資源を集め、建物を築き、やがては自分の街を動かす <strong>市長</strong> へ。
-                職人として技術を極めるか、商人として富を築くか。あなたの選択がこの世界の歴史になります。
-            </p>
-        </div>
-    </section>
-
-    <section id="rules" class="container">
-        <h2><i class="fa-solid fa-circle-info"></i> 基本ルール</h2>
-        <div class="card">
-            <ul style="text-align: left; display: inline-block; list-style: none; font-size: 1.1rem;">
-                <li style="margin-bottom: 10px;"><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> 暴言・誹謗中傷の禁止</li>
-                <li style="margin-bottom: 10px;"><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> 他人の建築物を壊さない（窃盗禁止）</li>
-                <li style="margin-bottom: 10px;"><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> サーバーに負荷をかける装置の禁止</li>
-                <li><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> 運営の指示に従うこと</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="sns" class="container">
-        <h2><i class="fa-solid fa-share-nodes"></i> SNS & Contact</h2>
-        <div class="card">
-            <div class="sns-grid">
-                <a href="あなたのYoutubeチャンネルURL" target="_blank" class="sns-icon youtube">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-                <a href="https://x.com/ouyutu?s=21" target="_blank" class="sns-icon x-twitter">
-                    <i class="fa-brands fa-x-twitter"></i>
-                </a>
-                <a href="mailto:gosika.ichu@gmail.com" class="sns-icon email-icon">
-                    <i class="fa-solid fa-envelope"></i>
-                </a>
-            </div>
-            
-            <div class="mail-list">
-                <div class="mail-item">
-                    <span class="mail-label"><i class="fa-solid fa-user"></i> 個人用お問い合わせ</span>
-                    <a href="mailto:gosika.ichu@gmail.com" class="mail-link">gosika.ichu@gmail.com</a>
+            <div class="card-header">01. IDENTITY</div>
+            <div class="card-body">
+                <div class="skin-frame">
+                    <img src="https://i.imgur.com/0LV95Kj.png" alt="Skin">
                 </div>
-                <div class="mail-item" style="margin-bottom: 0;">
-                    <span class="mail-label"><i class="fa-solid fa-briefcase"></i> 仕事用お問い合わせ</span>
-                    <a href="mailto:binchou0343@gmail.com" class="mail-link">binchou0343@gmail.com</a>
-                </div>
+                Minecraftサーバーの運営と、プラグイン開発に携わっています。
+                最新の技術と遊び心を大切にしながら、より良いゲーム体験を追求しています。
             </div>
         </div>
-    </section>
+
+        <div class="card">
+            <div class="card-header">02. お湯つ鯖~oyutusever~</div>
+            <div class="card-body">
+                IP: <span style="color: var(--accent-cyan)">play.oyutu.f5.si</span>
+                <p>自作プラグインや独自のサーバーメニュー、充実した機能を提供しています。24時間稼働中。</p>
+                <div style="font-size: 3rem; color: #21262d; font-weight: 900; position: absolute; bottom: 10px; right: 20px;">#MC</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">03. CONNECTS <span>:::03</span></div>
+            <div class="card-body">
+                <div class="slot-container">
+                    <div class="slot">Di</div>
+                    <div class="slot">✉</div>
+                    <div class="slot">Gh</div>
+                    <div class="slot">X</div>
+                    <div class="slot">??</div>
+                </div>
+                <p style="margin-top: 15px;">SNSや開発コミュニティへのリンクはこちら。</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">04. BLOG/UPDATES</div>
+            <div class="card-body">
+                <p style="color: var(--accent-cyan);">[PROJECT A] - Minecraft Plugin</p>
+                <p style="font-size: 0.7rem;">2023.10.26 RELEASED</p>
+                <p style="color: var(--accent-cyan); margin-top: 10px;">[PROJECT B] - Web App Prototype</p>
+            </div>
+        </div>
+    </div>
 
     <footer>
-        <p>&copy; 2025 お湯つ鯖 Project.</p>
-        <p style="font-size: 0.8rem; color: #7f8c8d; margin-top: 15px;">NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG.</p>
+        © 2026 YourName. All rights resighted | Built with <span style="color: var(--accent-pink);">&lt;2</span> and Code
     </footer>
+</div>
 
-    <script>
-        /* --- スライダー制御 --- */
-        let currentIdx = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-
-        function showSlide(index) {
-            if (index >= slides.length) currentIdx = 0;
-            else if (index < 0) currentIdx = slides.length - 1;
-            else currentIdx = index;
-
-            slides.forEach(s => s.classList.remove('active'));
-            dots.forEach(d => d.classList.remove('active'));
-
-            slides[currentIdx].classList.add('active');
-            dots[currentIdx].classList.add('active');
-        }
-
-        function changeSlide(n) { showSlide(currentIdx + n); }
-        function currentSlide(n) { showSlide(n); }
-
-        setInterval(() => { changeSlide(1); }, 6000);
-
-        /* --- IPコピー機能 --- */
-        function copyIP() {
-            const ipText = document.getElementById('serverIP').innerText;
-            navigator.clipboard.writeText(ipText).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                btn.innerText = 'コピーしました！';
-                btn.style.background = '#27ae60';
-                setTimeout(() => { 
-                    btn.innerText = 'IPをコピー'; 
-                    btn.style.background = '#e67e22';
-                }, 2000);
-            });
-        }
-    </script>
 </body>
 </html>
