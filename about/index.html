@@ -18,7 +18,6 @@
 
         body {
             background-color: var(--bg);
-            
             background-image: radial-gradient(#30363d 1px, transparent 1px);
             background-size: 30px 30px;
             color: #c9d1d9;
@@ -112,7 +111,6 @@
             clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
         }
 
-      
         .card::after {
             content: "";
             position: absolute;
@@ -163,11 +161,49 @@
             cursor: pointer;
         }
 
+        /* --- ここから「ホームに戻る」ボタンのUI --- */
+        .back-section {
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-back {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 35px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            border: 1px solid var(--accent-cyan);
+            background: rgba(0, 242, 255, 0.05);
+            transition: 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+
+        .btn-back:hover {
+            background: var(--accent-cyan);
+            color: var(--bg);
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-back::before {
+            content: '<< ';
+            margin-right: 8px;
+        }
+        /* --- ここまで --- */
+
         footer {
             text-align: center;
             margin-top: 80px;
+            padding-top: 20px;
             font-size: 0.8rem;
             color: #484f58;
+            border-top: 1px solid var(--border);
         }
 
     </style>
@@ -180,7 +216,7 @@
         <div class="glitch-wrapper">
             <h1 class="glitch-title">Yuuzi.DEV</h1>
         </div>
-        <p style="color: #8b949e; margin-top: 10px;">> Minecraft Server Admin / Frontant Developer</p>
+        <p style="color: #8b949e; margin-top: 10px;">> Minecraft Server Admin / Frontend Developer</p>
     </header>
 
     <div class="grid">
@@ -205,7 +241,7 @@
         </div>
 
         <div class="card">
-            <div class="card-header">03. CONNECTS <span>:::03</span></span></div>
+            <div class="card-header">03. CONNECTS <span>:::03</span></div>
             <div class="card-body">
                 <div class="slot-container">
                     <div class="slot">Di</div>
@@ -228,13 +264,18 @@
         </div>
     </div>
 
+    <div class="back-section">
+        <a href="https://yuuuzi.f5.si/" class="btn-back">RETURN_TO_HOME</a>
+    </div>
+
     <footer>
-        © 2026 YourName. All rights resighted | Built with <span style="color: var(--accent-pink);">&lt;2</span> and Code
+        © 2026 Yuuzi.DEV | Built with <span style="color: var(--accent-pink);">♥</span> and Code
     </footer>
 </div>
 
 </body>
 </html>
+
 
 
 
