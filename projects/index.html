@@ -1,1 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECTS // Yuuzi.DEV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mc-gui-bg: #c6c6c6;
+            --mc-dark-gray: #555555;
+            --mc-light-gray: #ffffff;
+            --mc-button-bg: #8b8b8b;
+            --mc-border-dark: #373737;
+            --mc-border-light: #ffffff;
+            --mc-hover: #70a530;
+        }
 
+        body {
+            background-color: #1a1a1a;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url('https://www.transparenttextures.com/patterns/dark-matter.png');
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 40px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            text-shadow: 3px 3px 0px #3f3f3f;
+            font-size: 2.5rem;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Xへのリンク用装飾リセット */
+        .mc-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.1s;
+        }
+
+        .mc-card {
+            background-color: var(--mc-button-bg);
+            border: 4px solid var(--mc-border-dark);
+            border-top-color: var(--mc-border-light);
+            border-left-color: var(--mc-border-light);
+            padding: 20px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .mc-card-link:hover .mc-card {
+            background-color: #9d9d9d;
+            border: 4px solid #373737;
+            border-top-color: #eeeeee;
+            border-left-color: #eeeeee;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        .mc-card-link:hover {
+            transform: scale(1.02);
+        }
+
+        /* クリックした瞬間の沈み込み */
+        .mc-card-link:active {
+            transform: scale(0.98);
+        }
+
+        .date-badge {
+            display: inline-block;
+            background: #373737;
+            color: #ffff55;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            border: 2px solid #000;
+        }
+
+        .project-title {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px #3f3f3f;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .project-title::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url('https://i.imgur.com/0LV95Kj.png') no-repeat center;
+            background-size: contain;
+            margin-right: 10px;
+            image-rendering: pixelated;
+        }
+
+        .description {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .x-hint {
+            display: block;
+            text-align: right;
+            font-size: 0.7rem;
+            color: #ffff55;
+            margin-top: 10px;
+            opacity: 0.6;
+        }
+
+        .footer-nav {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .mc-button {
+            display: inline-block;
+            background-color: var(--mc-button-bg);
+            border: 3px solid var(--mc-border-dark);
+            border-top-color: var(--mc-border-light);
+            border-left-color: var(--mc-border-light);
+            color: #fff;
+            padding: 10px 30px;
+            text-decoration: none;
+            font-size: 1rem;
+            text-shadow: 2px 2px 0px #3f3f3f;
+        }
+
+        .mc-button:hover {
+            background-color: var(--mc-hover);
+            border-color: #1e3509;
+            border-top-color: #a8d677;
+            border-left-color: #a8d677;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>PROJECT LOGS</h1>
+        <p style="color: #aaa;">Status: Adventure Mode</p>
+    </header>
+
+    <div class="timeline">
+        <a href="https://x.com/YourID" target="_blank" class="mc-card-link">
+            <div class="mc-card">
+                <div class="date-badge">2026 / 01 / 15</div>
+                <div class="project-title">大規模サーバー構築プロジェクト</div>
+                <div class="description">
+                    身内の友達と2人で「大規模サーバー」の構築を決意。
+                    現在、システム設計およびインフラ構成を進行中。
+                </div>
+                <span class="x-hint">Click to view on X ></span>
+            </div>
+        </a>
+
+        <a href="https://x.com/YourID" target="_blank" class="mc-card-link">
+            <div class="mc-card">
+                <div class="date-badge">2025 / 12 / 20</div>
+                <div class="project-title">AN Line World 運営就任</div>
+                <div class="description">
+                    AN Line Worldの運営チームに加入。
+                    webサイトの作成及び広報活動、また、プレイヤー同士での喧嘩や事件に対する対処をDiscordにおいて対応している。
+                </div>
+                <span class="x-hint">Click to view on X ></span>
+            </div>
+        </a>
+
+        <a href="https://x.com/YourID" target="_blank" class="mc-card-link">
+            <div class="mc-card">
+                <div class="date-badge">2025 / 12 / 13</div>
+                <div class="project-title">お湯つ鯖 運営加入</div>
+                <div class="description">
+                    Minecraftサーバー運営に興味を持ち、お湯つ鯖の運営としてキャリアをスタート。
+                    ここから開発と運営の楽しさを知る。
+                </div>
+                <span class="x-hint">Click to view on X ></span>
+            </div>
+        </a>
+    </div>
+
+    <div class="footer-nav">
+        <a href="https://yuuuzi.f5.si/" class="mc-button">Back to Title Screen</a>
+    </div>
+</div>
+
+</body>
+</html>
