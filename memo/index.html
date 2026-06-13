@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Web Notepad — ダウンロードできるメモ帳</title>
+  <style>
+    :root{ --bg:#0f1720; --panel:#071022; --muted:#9fb4c8; --accent:#60a5fa; --text:#e6eef8 }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Inter, system-ui, "Hiragino Kaku Gothic ProN", 'Yu Gothic', Roboto; background:linear-gradient(180deg,#07101a,#081427); color:var(--text)}
+    .app{display:flex; height:100vh}
+    .sidebar{width:300px; background:rgba(255,255,255,0.02); border-right:1px solid rgba(255,255,255,0.03); padding:12px; display:flex; flex-direction:column; gap:8px}
+    .brand{display:flex; align-items:center; gap:8px}
+    .logo{width:36px;height:36;border-radius:8px;background:linear-gradient(90deg,var(--accent),#34d399);display:flex;align-items:center;justify-content:center;color:#021018;font-weight:700}
+    h1{margin:0;font-size:15px}
+    .controls{display:flex; gap:8px; margin-top:6px}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:8px;cursor:pointer;color:var(--text)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#60a5fa); color:#021018; border:none}
+    .notes{flex:1; overflow:auto; margin-top:8px; display:flex; flex-direction:column; gap:6px}
+    .note-item{padding:10px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.02); background:rgba(0,0,0,0.05)}
+    .note-item.active{outline:2px solid rgba(96,165,250,0.12); background:rgba(255,255,255,0.02)}
+    .meta{font-size:12px;color:var(--muted);}
+
+    .editor-wrap{flex:1; display:flex; flex-direction:column; padding:16px}
+    .editor-toolbar{display:flex; gap:8px; align-items:center}
+    input[type=text]{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text)}
+    textarea{flex:1;margin-top:12px;padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);resize:none;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:14px}
+    .foot{height:34px;display:flex;align-items:center; justify-content:space-between; color:var(--muted); font-size:13px}
+
+    @media (max-width:880px){ .sidebar{display:none} .app{flex-direction:column} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">N</div>
+        <div>
+          <h1>Web Notepad</h1>
+          <div class="meta">ブラウザ内で作る・保存・ダウンロード</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="newBtn" class="btn primary">新規メモ</button>
+        <button id="downloadAllBtn" class="btn">全てダウンロード</button>
+      </div>
+
+      <div class="notes" id="notesList" aria-label="メモ一覧"></div>
+
+      <div style="display:flex; gap:8px; margin-top:8px">
+        <input id="importFile" type="file" accept="text/*" style="display:none">
+        <button id="importBtn" class="btn">インポート</button>
+        <button id="clearAll" class="btn">すべて削除</button>
+      </div>
+    </aside>
+
+    <main class="editor-wrap">
+      <div class="editor-toolbar">
+        <input id="title" type="text" placeholder="タイトルを入力" style="width:40%">
+        <div style="flex:1"></div>
+        <button id="saveBtn" class="btn primary">保存</button>
+        <button id="downloadBtn" class="btn">ダウンロード</button>
+        <button id="deleteBtn" class="btn">削除</button>
+      </div>
+
+      <textarea id="content" spellcheck="false" placeholder="ここにメモを書く..."></textarea>
+
+      <div class="foot">
+        <div id="status">未保存</div>
+        <div>
+          <small>ショートカット: Ctrl/Cmd+S 保存・Ctrl/Cmd+N 新規・Ctrl/Cmd+D ダウンロード</small>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // storage key
+    const KEY = 'web-notepad:notes';
+    let notes = {};
+    let currentId = null;
+
+    // elements
+    const notesList = document.getElementById('notesList');
+    const newBtn = document.getElementById('newBtn');
+    const titleInput = document.getElementById('title');
+    const content = document.getElementById('content');
+    const saveBtn = document.getElementById('saveBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const status = document.getElementById('status');
+    const importBtn = document.getElementById('importBtn');
+    const importFile = document.getElementById('importFile');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
+    const clearAllBtn = document.getElementById('clearAll');
+
+    function uid() { return 'n_' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+    function load() {
+      try { notes = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ notes = {}; }
+      renderList();
+      if (!currentId) {
+        const ids = Object.keys(notes);
+        if (ids.length) selectNote(ids[0]);
+      }
+    }
+
+    function saveCurrent() {
+      if (!currentId) return;
+      const t = titleInput.value.trim() || '無題';
+      const c = content.value;
+      notes[currentId] = {id: currentId, title: t, content: c, updated: Date.now() };
+      localStorage.setItem(KEY, JSON.stringify(notes));
+      renderList();
+      setStatus('保存しました');
+    }
+
+    function createNote(withContent='') {
+      const id = uid();
+      notes[id] = { id, title: '新しいメモ', content: withContent, updated: Date.now() };
+      localStorage.setItem(KEY, JSON.stringify(notes));
+      renderList();
+      selectNote(id);
+    }
+
+    function deleteNote(id) {
+      if (!notes[id]) return;
+      delete notes[id];
+      localStorage.setItem(KEY, JSON.stringify(notes));
+      if (currentId === id) currentId = null;
+      renderList();
+      // select another
+      const ids = Object.keys(notes);
+      if (ids.length) selectNote(ids[0]); else clearEditor();
+    }
+
+    function selectNote(id) {
+      currentId = id;
+      const n = notes[id];
+      if (!n) { clearEditor(); return; }
+      titleInput.value = n.title;
+      content.value = n.content;
+      markActive(id);
+      setStatus('読み込み完了');
+    }
+
+    function renderList() {
+      notesList.innerHTML = '';
+      const arr = Object.values(notes).sort((a,b)=>b.updated - a.updated);
+      for (const n of arr) {
+        const el = document.createElement('div');
+        el.className = 'note-item' + (n.id === currentId ? ' active':'');
+        el.innerHTML = `<strong>${escapeHtml(n.title)}</strong><div class="meta">${new Date(n.updated).toLocaleString()}</div>`;
+        el.addEventListener('click', ()=> selectNote(n.id));
+        el.addEventListener('dblclick', ()=> {
+          const newTitle = prompt('タイトルを編集', n.title);
+          if (newTitle!==null) { n.title = newTitle; n.updated = Date.now(); localStorage.setItem(KEY, JSON.stringify(notes)); renderList(); }
+        });
+        notesList.appendChild(el);
+      }
+    }
+
+    function markActive(id){
+      Array.from(notesList.children).forEach(ch=> ch.classList.remove('active'));
+      const idx = Object.values(notes).findIndex(x=>x.id===id);
+      if (idx>=0 && notesList.children[idx]) notesList.children[idx].classList.add('active');
+    }
+
+    function clearEditor(){ currentId = null; titleInput.value=''; content.value=''; setStatus('未保存'); }
+
+    function setStatus(txt){ status.textContent = txt; setTimeout(()=>{ if (status.textContent===txt) status.textContent = ''; }, 1500); }
+
+    // escape
+    function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // download a single note
+    function downloadNote(id){
+      const n = notes[id];
+      if (!n) return alert('ノートが見つかりません');
+      const filename = (n.title || 'note') + '.txt';
+      const blob = new Blob([n.content], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      setStatus('ダウンロードしました');
+    }
+
+    // download all as one text file with separators
+    function downloadAll(){
+      const arr = Object.values(notes).sort((a,b)=>b.updated-a.updated);
+      if (!arr.length) return alert('メモがありません');
+      let text = '';
+      for (const n of arr) {
+        text += `### ${n.title} (${new Date(n.updated).toLocaleString()})\n\n` + n.content + '\n\n---\n\n';
+      }
+      const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = 'notes_all.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      setStatus('全てダウンロードしました');
+    }
+
+    // import text file as new note
+    importBtn.addEventListener('click', ()=> importFile.click());
+    importFile.addEventListener('change',(e)=>{
+      const f = e.target.files[0]; if (!f) return;
+      const reader = new FileReader();
+      reader.onload = ()=> { createNote(reader.result); }
+      reader.readAsText(f,'utf-8');
+    });
+
+    // events
+    newBtn.addEventListener('click', ()=> createNote(''));
+    saveBtn.addEventListener('click', saveCurrent);
+    deleteBtn.addEventListener('click', ()=> {
+      if (!currentId) return; if (!confirm('このメモを削除しますか？')) return; deleteNote(currentId);
+    });
+    downloadBtn.addEventListener('click', ()=> { if (!currentId) return alert('メモを選んでください'); downloadNote(currentId); });
+    downloadAllBtn.addEventListener('click', downloadAll);
+    clearAllBtn.addEventListener('click', ()=>{ if (!confirm('すべてのメモを削除しますか？')) return; notes={}; localStorage.removeItem(KEY); load(); clearEditor(); });
+
+    // auto-save on input with debounce
+    let tmo;
+    content.addEventListener('input', ()=>{ setStatus('編集中...'); clearTimeout(tmo); tmo = setTimeout(()=>{ if (!currentId) { createNote(content.value); } else { saveCurrent(); } }, 800); });
+    titleInput.addEventListener('change', ()=> { if (currentId) saveCurrent(); });
+
+    // keyboard shortcuts
+    window.addEventListener('keydown',(e)=>{
+      if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s') { e.preventDefault(); saveCurrent(); }
+      if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='n') { e.preventDefault(); createNote(''); }
+      if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='d') { e.preventDefault(); if (currentId) downloadNote(currentId); }
+    });
+
+    // initial load
+    load();
+  </script>
+</body>
+</html>
