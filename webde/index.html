@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Web HTML Editor — 保存して .html にするエディタ</title>
+  <style>
+    :root{ --bg:#0f1720; --panel:#071022; --muted:#9fb4c8; --accent:#60a5fa; --text:#e6eef8 }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Inter, system-ui, "Hiragino Kaku Gothic ProN", 'Yu Gothic', Roboto; background:linear-gradient(180deg,#07101a,#081427); color:var(--text)}
+    header{display:flex; gap:12px; align-items:center; padding:12px 18px; border-bottom:1px solid rgba(255,255,255,0.03)}
+    header h1{font-size:16px; margin:0}
+    .container{display:grid; grid-template-columns: 1fr 480px; gap:12px; padding:12px; height:calc(100% - 62px)}
+
+    .editor-panel, .preview-panel{background:var(--panel); border-radius:10px; padding:10px; box-shadow:0 6px 18px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03); display:flex; flex-direction:column}
+
+    .toolbar{display:flex; gap:8px; align-items:center; margin-bottom:8px}
+    .toolbar input[type=text]{background:transparent; border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; color:var(--text)}
+    .btn{background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03); padding:8px 10px; border-radius:8px; cursor:pointer; color:var(--text)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#34d399); color:#021018; border:none}
+    .spacer{flex:1}
+
+    textarea#editor{flex:1; width:100%; resize:none; background:transparent; border:1px solid rgba(255,255,255,0.02); padding:12px; border-radius:8px; color:var(--text); font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace; font-size:13px; line-height:1.5}
+
+    iframe#preview{flex:1; width:100%; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:white}
+
+    .small{font-size:12px; color:var(--muted)}
+    .controls{display:flex; gap:8px; align-items:center}
+
+    footer{padding:8px 12px; font-size:12px; color:var(--muted); border-top:1px solid rgba(255,255,255,0.02)}
+
+    @media (max-width:980px){ .container{grid-template-columns:1fr; } .preview-panel{order:2} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Web HTML Editor</h1>
+    <div class="small">エディット → プレビュー → 保存（.html）をワンファイルで行えます</div>
+    <div style="margin-left:auto; display:flex; gap:8px; align-items:center">
+      <label class="small">オート更新<input id="autoUpdate" type="checkbox" style="margin-left:6px" checked></label>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="editor-panel">
+      <div class="toolbar">
+        <input id="filename" type="text" value="index.html" style="width:180px" aria-label="保存するファイル名">
+        <button id="downloadBtn" class="btn primary">.html をダウンロード</button>
+        <button id="openBtn" class="btn">ローカルファイルを開く</button>
+        <input id="fileInput" type="file" accept="text/html" style="display:none">
+        <div class="spacer"></div>
+        <select id="templates" class="btn" style="padding:7px">
+          <option value="">テンプレート選択</option>
+          <option value="basic">HTML 基本テンプレート</option>
+          <option value="bootstrap-cdn">Bootstrap CDN を使うテンプレート</option>
+          <option value="minimal">ミニマル (空の body)</option>
+        </select>
+        <button id="applyTemplate" class="btn">適用</button>
+      </div>
+
+      <textarea id="editor" spellcheck="false" aria-label="HTML エディタ"></textarea>
+
+      <div style="margin-top:8px; display:flex; gap:8px; align-items:center; justify-content:space-between">
+        <div class="small">Ctrl/Cmd + S で保存、Ctrl/Cmd + Enter でプレビュー更新</div>
+        <div class="controls">
+          <button id="formatBtn" class="btn">簡易整形</button>
+          <button id="clearBtn" class="btn">空にする</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="preview-panel">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
+        <div class="small">ライブプレビュー</div>
+        <div class="spacer"></div>
+        <button id="rerender" class="btn">今すぐ更新</button>
+        <button id="openPreviewWindow" class="btn">別ウィンドウで開く</button>
+      </div>
+
+      <iframe id="preview" sandbox="allow-scripts allow-same-origin" title="preview"></iframe>
+
+      <div style="margin-top:8px; display:flex; gap:8px; align-items:center; justify-content:space-between">
+        <div class="small">プレビューは sandbox 付き iframe で隔離されています。</div>
+        <div class="small" id="lastSaved">-</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    保存されたファイルはそのままブラウザで開ける <strong>.html</strong> です。ローカルに保存して共有できます。
+  </footer>
+
+  <script>
+    // elements
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const filenameInput = document.getElementById('filename');
+    const rerender = document.getElementById('rerender');
+    const autoUpdate = document.getElementById('autoUpdate');
+    const fileInput = document.getElementById('fileInput');
+    const openBtn = document.getElementById('openBtn');
+    const templates = document.getElementById('templates');
+    const applyTemplate = document.getElementById('applyTemplate');
+    const formatBtn = document.getElementById('formatBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const openPreviewWindow = document.getElementById('openPreviewWindow');
+    const lastSaved = document.getElementById('lastSaved');
+
+    // default content (small demo)
+    const DEFAULT = `<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Page</title>
+  <style>
+    body{font-family:system-ui,-apple-system,\"Hiragino Kaku Gothic ProN\",\"Yu Gothic\"; padding:24px}
+    h1{color:#2b6cb0}
+  </style>
+</head>
+<body>
+  <h1>Hello from your editor 🎉</h1>
+  <p>ここにHTMLを書いて、右側でプレビュー、ダウンロードで .html を保存できます。</p>
+</body>
+</html>`;
+
+    // load saved from localStorage if exists
+    const STORAGE_KEY = 'simple-web-html-editor:content';
+    function load() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      editor.value = saved || DEFAULT;
+      updatePreview();
+    }
+
+    function updatePreview() {
+      const html = editor.value;
+      // use srcdoc if supported, else write into iframe
+      if ('srcdoc' in preview) {
+        preview.srcdoc = html;
+      } else {
+        const doc = preview.contentDocument || preview.contentWindow.document;
+        doc.open(); doc.write(html); doc.close();
+      }
+    }
+
+    // debounce for auto update
+    let timeout;
+    editor.addEventListener('input', () => {
+      localStorage.setItem(STORAGE_KEY, editor.value);
+      if (autoUpdate.checked) {
+        clearTimeout(timeout);
+        timeout = setTimeout(updatePreview, 350);
+      }
+    });
+
+    // buttons
+    rerender.addEventListener('click', updatePreview);
+    document.getElementById('applyTemplate').addEventListener('click', () => {
+      const t = templates.value;
+      if (!t) return alert('テンプレートを選んでください');
+      if (t === 'basic') editor.value = `<!doctype html>\n<html lang=\"ja\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Document</title>\n</head>\n<body>\n  <h1>Basic template</h1>\n</body>\n</html>`;
+      if (t === 'bootstrap-cdn') editor.value = `<!doctype html>\n<html lang=\"ja\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Bootstrap</title>\n<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n</head>\n<body class=\"p-4\">\n  <div class=\"container\"><h1 class=\"mb-3\">Bootstrap CDN</h1></div>\n</body>\n</html>`;
+      if (t === 'minimal') editor.value = `<!doctype html>\n<html><head><meta charset=\"utf-8\"></head><body></body></html>`;
+      localStorage.setItem(STORAGE_KEY, editor.value);
+      updatePreview();
+    });
+
+    // open local file
+    openBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+      const f = e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => { editor.value = reader.result; localStorage.setItem(STORAGE_KEY, editor.value); updatePreview(); };
+      reader.readAsText(f, 'utf-8');
+    });
+
+    // download as .html
+    downloadBtn.addEventListener('click', () => {
+      const name = filenameInput.value.trim() || 'index.html';
+      const blob = new Blob([editor.value], {type:'text/html;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      lastSaved.textContent = `最後にダウンロード: ${new Date().toLocaleString()}`;
+    });
+
+    // keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault(); downloadBtn.click();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault(); updatePreview();
+      }
+    });
+
+    // format: very simple indentation for tags (not perfect)
+    formatBtn.addEventListener('click', () => {
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(editor.value, 'text/html');
+        const formatted = formatNode(doc.documentElement, 0).trim();
+        editor.value = '<!doctype html>\n' + formatted;
+        localStorage.setItem(STORAGE_KEY, editor.value);
+        updatePreview();
+      } catch (err) { alert('整形に失敗しました：' + err.message); }
+    });
+
+    function formatNode(node, depth) {
+      const indent = '  '.repeat(depth);
+      if (node.nodeType === Node.TEXT_NODE) return indent + node.textContent.trim() + '\n';
+      if (node.nodeType === Node.COMMENT_NODE) return indent + '<!--' + node.nodeValue + '-->\n';
+      let s = indent + '<' + node.tagName.toLowerCase();
+      // attrs
+      for (let i=0;i<node.attributes?.length||0;i++){
+        const a = node.attributes[i]; s += ' ' + a.name + '="' + a.value + '"';
+      }
+      s += '>' + '\n';
+      for (const child of node.childNodes) s += formatNode(child, depth+1);
+      s += indent + '</' + node.tagName.toLowerCase() + '>' + '\n';
+      return s;
+    }
+
+    clearBtn.addEventListener('click', () => {
+      if (confirm('エディタを空にしますか？保存はされません')) { editor.value = ''; localStorage.setItem(STORAGE_KEY, ''); updatePreview(); }
+    });
+
+    // open preview in new window
+    let previewWindow = null;
+    openPreviewWindow.addEventListener('click', () => {
+      if (previewWindow && !previewWindow.closed) { previewWindow.focus(); previewWindow.document.body.innerHTML = ''; previewWindow.document.write(editor.value); previewWindow.document.close(); return; }
+      previewWindow = window.open('', '_blank');
+      previewWindow.document.open(); previewWindow.document.write(editor.value); previewWindow.document.close();
+    });
+
+    // initial load
+    load();
+  </script>
+</body>
+</html>
