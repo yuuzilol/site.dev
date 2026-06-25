@@ -1,0 +1,1616 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    
+    <meta charset="UTF-8">
+    </meta>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </meta>
+    
+    <title>
+      自作サイト/運営サイト一覧　　　　　　流失禁止極秘
+    </title>
+    
+    <link rel="icon" href="https://i.imgur.com/cOKOu04.jpeg" type="image/png">
+    </link>
+    
+    <style>
+      body {
+        background-color: #2e2e2e;
+        color: #f0f0f0;
+        font-family: sans-serif; 
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .page-wrapper {
+        display: flex;
+        justify-content: center; 
+        padding: 30px 20px; 
+        min-height: 100vh; 
+    }
+
+    .container {
+        width: 700px;
+        flex: none; 
+        background-color: #2e2e2e; 
+        padding: 20px;
+        border-radius: 10px;
+        box-sizing: border-box; 
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        padding: 10px 0;
+        border-bottom: 2px solid #555;
+        color: #ffffff;
+    }
+    header p {
+        margin-top: -20px;
+        font-size: 0.9em;
+        color: #bbb;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 40px 0 20px;
+        padding: 10px 0;
+        border-bottom: 2px solid #555;
+    }
+
+    .link-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    .link-card {
+        display: block;
+        text-decoration: none;
+        color: inherit; 
+        background-color: #3f3f3f; 
+        border-radius: 10px; 
+        overflow: hidden; 
+        border: 1px solid #555; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s;
+        position: relative;
+    }
+    .link-card:hover {
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px); 
+        border-color: #777;
+    }
+    .card-image {
+        width: 100%;
+        height: 80px; 
+        background-color: #555; 
+        display: flex; justify-content: center; align-items: center;
+        overflow: hidden;
+        border-bottom: 1px solid #444;
+    }
+    .card-image img { 
+        width: 100%; 
+        height: 100%;
+        object-fit: cover; 
+    }
+    .card-info { padding: 10px 10px 15px; text-align: center;
+    }
+    .site-url { font-weight: bold; margin: 5px 0 2px; font-size: 0.95em;
+    }
+    .site-desc { font-size: 0.8em; color: #b0b0b0; padding: 0 5px;
+    } 
+
+    .status-area {
+        display: flex; align-items: center; justify-content: center;
+        margin-top: 5px; font-size: 0.75em;
+    }
+    .status-indicator {
+        display: inline-block;
+        width: 8px; height: 8px; border-radius: 50%;
+        margin-right: 5px; background-color: #999; transition: background-color 0.5s;
+    }
+    .status-ok .status-indicator { background-color: #4CAF50; }
+    .status-ok .status-text { color: #4CAF50;
+    }
+    .status-down {
+        background-color: #6d3a3a !important; border: 1px solid #e74c3c;
+        opacity: 0.8; 
+    }
+    .status-down .status-indicator { background-color: #e74c3c; }
+    .status-down .status-text { color: #e74c3c;
+    }
+    .status-loading .status-indicator { background-color: #f39c12; }
+
+    .fullscreen-ad {
+        display: none;
+        width: 250px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-self: flex-start;
+    }
+
+    .fullscreen-ad a {
+        display: block;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        transition: transform 0.2s;
+    }
+    .fullscreen-ad a:hover { transform: scale(1.02);
+    }
+
+    .fullscreen-ad.left { margin-right: 20px; }
+    .fullscreen-ad.right { margin-left: 20px;
+    }
+
+    .fullscreen-ad img { max-height: 90vh; width: 100%; object-fit: contain; opacity: 0.9; display: block;
+    }
+
+    @media (min-width: 1200px) { .fullscreen-ad { display: flex;
+    } }
+    @media (min-width: 768px) and (max-width: 1199px) {
+        .fullscreen-ad.right { display: none;
+    } 
+        .fullscreen-ad.left { display: flex;
+    }
+        .container { width: 700px;
+    }
+    }
+    @media (max-width: 767px) {
+        .page-wrapper { display: block;
+        padding: 20px 10px; }
+        .container { width: 100%; max-width: none; padding: 10px;
+    }
+        .link-grid { grid-template-columns: 1fr;
+    }
+    }
+
+    #hidden-section {
+        /* display: none; はJSで制御するため、HTML側でインラインスタイルとして設定します */
+        margin-top: 30px;
+    }
+    #show-hidden-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+    #show-hidden-btn:hover {
+        background-color: #45a049;
+    }
+    
+    /* === SPA Navigation CSS START === */
+    .main-nav {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+        width: 100%;
+    }
+
+    .nav-button {
+        background-color: #555;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.0em;
+        font-weight: bold;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    .nav-button:hover, .nav-button.active {
+        background-color: #ff9900; /* 目立つ色に変更 */
+        color: #2e2e2e;
+    }
+
+    .nav-button.active {
+        cursor: default;
+    }
+    /* === SPA Navigation CSS END === */
+    </style>
+    
+  </head>
+  
+  <body>
+　 <audio id="bgm" src="https://raw.githubusercontent.com/yuuzilol/gunslol-file/main/TWICE%20.mp3" loop></audio>
+
+    
+    <div class="page-wrapper">
+      
+      <div class="fullscreen-ad left">
+        広告↓Sponsor
+        <a href="https://zuzu.f5.si" target="_blank">
+
+          <img src="https://i.imgur.com/gF4TMbu.jpeg" alt="左PC限定バナー 1">
+          </img>
+        </a>
+        Gaming chair 
+    
+        <a href="https://zuzu.f5.si" target="_blank">
+          <img src="https://i.imgur.com/qjo2zDz.jpeg" alt="左PC限定バナー 2">
+          </img>
+        </a>
+          Parker
+       
+     
+        <a href="https://zuzu.f5.si" target="_blank">
+                <img src="https://i.imgur.com/P04WxPm.jpeg" alt="左PC限定バナー 3"> 
+   
+          </a>
+          Energy drink
+        <a href="https://zuzu.f5.si" target="_blank">
+                <img src="https://i.imgur.com/v8ubHf2.jpeg" alt="左PC限定バナー 4"> 
+            </a>
+          My Book
+         <a href="https:" target="_blank">
+                
+ <img src="https://i.imgur.com/8tWMyor.jpeg" alt="左PC限定バナー 5"> 
+            </a>
+         keybord
+        
+         <a href="https:" target="_blank">
+                <img src="https://i.imgur.com/gZ5PDbf.jpeg" alt="左PC限定バナー 6"> 
+            </a>
+         mouse
+          <a href="https:" target="_blank">
+   
+              <img src="https://i.imgur.com/HWSNnm5.jpeg" alt="左PC限定バナー 7"> 
+            </a>
+         Earphones
+          <a href="https:" target="_blank">
+                <img src="https://i.imgur.com/GtxloGJ.jpeg" alt="左PC限定バナー 8">
+            </a>
+         VISA Card
+ 
+      </div>
+  
+      <div class="container">
+        
+        <nav class="main-nav">
+            <button class="nav-button" data-page="home">🏠 サイト一覧</button>
+            <button class="nav-button" data-page="profile">👤 プロフィール</button>
+            <button class="nav-button" data-page="links">🔗 リンク集</button>
+　　　　　　<button id="bgm-toggle" class="nav-button">🎵 BGM OFF</button>
+        </nav>
+        <div id="content-area">
+          </div>
+        </div>
+  
+     <div class="fullscreen-ad right">
+        <a href="https://zuzu.f5.si" target="_blank"> <img src="https://i.imgur.com/xAYhWVF.png" alt="右PC限定バナー 1"> </img> </a> <a href="https://zuzu.f5.si" target="_blank"> <img src="https://i.imgur.com/SkgIUxs.jpeg" alt="右PC限定バナー 2"> 　　 </a> 　　　　　　　　 <a href="https://yuuuzi.f5.si/#contact" target="_blank"> <img src="https://i.imgur.com/ziR4Y9l.png" alt="右PC限定バナー 3"> 　　 </a> 　　　　お問い合わせ/contact↑ <a href="https://zuzu.f5.si" target="_blank"> <img src="https://i.imgur.com/Lh2KlRg.jpeg" alt="右PC限定バナー4"> </a> My Photo Gallery↑ 
+ <a href="https://zuzu.f5.si" target="_blank"> <img src="https://i.imgur.com/8mDItc5.jpeg" alt="右PC限定バナー5"> </a> <a href="https://zuzu.f5.si" target="_blank"> <img src="https://i.imgur.com/Md0N5e2.jpeg" alt="右PC限定バナー6"> </a> <a href="https://zuzu.f5.si" target="_blank"> <img src="https://i.imgur.com/ZTZtosT.jpeg" alt="右PC限定バナー6"> </a>　...
+      </div>
+    
+    </div>
+    
+    <script>
+/* === BGM制御ロジック === */
+const bgm = document.getElementById('bgm');
+const bgmBtn = document.getElementById('bgm-toggle');
+
+bgmBtn.addEventListener('click', function() {
+    if (bgm.paused) {
+        bgm.play();
+        bgmBtn.textContent = '🎵 BGM ON';
+        bgmBtn.classList.add('playing');
+    } else {
+        bgm.pause();
+        bgmBtn.textContent = '🎵 BGM OFF';
+        bgmBtn.classList.remove('playing');
+    }
+});
+
+/* === 既存のスクリプト (サイトステータスチェック & タイトルスクロール) START === */
+// 元のコードを関数化して、homeページがロードされた後に実行できるようにします
+const checkAllSiteStatus = function() {
+    // URLのリストを定義 (元のコードには明示的なリストはなかったため、カード要素から動的に取得します)
+    const cardElements = document.querySelectorAll('#content-area .link-card[data-url]');
+    
+    if (cardElements.length === 0) return; // 要素がなければ何もしない
+
+    // タイムアウト設定
+    const TIMEOUT_MS = 8000;
+
+    // fetchStatus 関数はそのまま利用
+    cardElements.forEach(card => {
+        const url = card.getAttribute('data-url');
+        const statusTextElement = card.querySelector('.status-text');
+        const statusIndicatorElement = card.querySelector('.status-indicator');
+        
+        if (!url || !statusTextElement) return;
+
+        // クラスをリセット
+        card.classList.remove('status-ok', 'status-down');
+        card.classList.add('status-loading');
+        statusTextElement.textContent = 'Loading...';
+
+        const checkStatus = async () => {
+            const startTime = Date.now();
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+            
+            try {
+                
+                // 外部サイトのURLを除外
+                if (statusTextElement.textContent === '外部サイト') {
+                    card.classList.remove('status-loading');
+                    return;
+                }
+
+                // サーバーサイドでないため、CORS回避のためのプロキシが必要になりますが、
+                // 実行環境がないため、ここでは元のコードのfetchを再現する形をとります。
+                // 実際のサーバー上ではCORSプロキシURLを設定するか、サーバー側でチェックを行う必要があります。
+                const response = await fetch(url, {
+                    signal: controller.signal,
+                    mode: 'no-cors' // 簡易チェックのためno-corsモードを試みますが、ステータスは取得できません
+                });
+                
+                clearTimeout(timeoutId);
+
+                const endTime = Date.now();
+                const pingTime = endTime - startTime;
+
+                card.classList.remove('status-loading');
+
+                // no-corsではresponse.okやstatusが使えないため、簡易的に成功判定をシミュレート
+                if (pingTime < TIMEOUT_MS) {
+                    card.classList.add('status-ok');
+                    statusTextElement.textContent = `UP (${pingTime}ms)`;
+                } else {
+                    card.classList.add('status-down');
+                    statusTextElement.textContent = `DOWN (Timed Out)`;
+                }
+                
+                // 元のコードの完全な再現は不可能ですが、SPAとして再初期化されるようにしました。
+                // 実際の稼働状況サイトでは、この fetch の部分をサーバー側で処理する必要があります。
+
+            } catch(err) {
+                clearTimeout(timeoutId);
+                card.classList.remove('status-loading');
+                card.classList.add('status-down');
+                statusTextElement.textContent = err.name==='AbortError'?`DOWN (Timeout ${TIMEOUT_MS/1000}s)`:'DOWN (Check Failed)';
+            }
+        };
+
+        // ページロード時と30秒ごとにチェック
+        checkStatus();
+        setInterval(checkStatus, 30000);
+    });
+};
+
+const setupHiddenSectionToggle = function() {
+    const showHiddenBtn = document.getElementById('show-hidden-btn');
+    const hiddenSection = document.getElementById('hidden-section');
+
+    if (showHiddenBtn && hiddenSection) {
+        // 初期状態を隠す
+        hiddenSection.style.display = 'none';
+
+        showHiddenBtn.addEventListener('click', function() {
+            if (hiddenSection.style.display === 'none' || hiddenSection.style.display === '') {
+                hiddenSection.style.display = 'block';
+                showHiddenBtn.textContent = '閉じる';
+            } else {
+                hiddenSection.style.display = 'none';
+                showHiddenBtn.textContent = 'さらに表示';
+            }
+        });
+    }
+};
+
+const initializeHomePageScripts = function() {
+    // コンテンツがロードされた後に実行する必要があるスクリプト
+    checkAllSiteStatus();
+    setupHiddenSectionToggle();
+};
+
+// タイトルスクロールはコンテンツエリアとは独立しているため、DOMロード時に一度だけ実行します
+const fullTitle = "★自作サイト/運営サイト一覧 ★ 極秘 "; 
+let scrollPos = 0;
+
+function scrollTitle() {
+    const scrollingTitle = fullTitle.substring(scrollPos) + fullTitle.substring(0, scrollPos);
+    document.title = scrollingTitle;
+
+    scrollPos++;
+    if (scrollPos >= fullTitle.length) {
+        scrollPos = 0;
+    }
+
+    // 0.2秒ごとにタイトルを更新 (スクロール速度の調整)
+    setTimeout(scrollTitle, 200); 
+}
+
+/* === 既存のスクリプト END === */
+
+
+/* === SPA ロジック START === */
+
+document.addEventListener('DOMContentLoaded', function() {
+    const contentArea = document.getElementById('content-area');
+    const navButtons = document.querySelectorAll('.nav-button');
+    
+    // 元のホームコンテンツを文字列として保存します
+    const homeContent = `
+        <header>
+          
+          <h1>
+            自作サイト/運営サイト一覧
+          </h1>
+          
+          <p>
+           
+          現在の稼働状況をリアルタイムでチェックしています。
+          </p>
+          
+        </header>
+        
+        <div class="link-grid" id="site-list">
+          
+          <a href="https://yuuzi.f5.si" target="_blank" class="link-card" data-url="https://yuuzi.f5.si">
+            
+            <div class="card-image">
+              <img src="https://i.imgur.com/xw5x23z.jpeg" alt="yuuzi.f5.siのバナー">
+              </img>
+            </div>
+ 
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+                yuuzi.f5.si
+              </p>
+              
+   
+            <p class="site-desc">
+                メインサイト（ポートフォリオ）
+              </p>
+              
+              <div class="status-area">
+                <span class="status-indicator">
+            
+              </span>
+                <span class="status-text">
+                  Loading...
+                </span>
+              </div>
+              
+            </div>
+     
+        
+          </a>
+          
+          <a href="https://yuuuzi.f5.si" target="_blank" class="link-card" data-url="https://yuuuzi.f5.si">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/K7kcXhT.jpeg" alt="yuuuzi.f5.siのバナー">
+    
+              </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+          
+              yuuuzi.f5.si
+              </p>
+              
+              <p class="site-desc">
+                メインサイト（ポートフォリオ）
+              </p>
+              
+       
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+          
+                Loading...
+                </span>
+                
+              </div>
+              
+            </div>
+            
+        
+          </a>
+          
+          <a href="https://emper.f5.si" target="_blank" class="link-card" data-url="https://emper.f5.si">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/4woQltl.jpeg" alt="emper株式会社のバナー">
+              </img>
+     
+          
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+                emper.f5.si
+         
+              </p>
+              
+              <p class="site-desc">
+                emper株式会社のHP
+              </p>
+              
+              <div class="status-area">
+       
+                
+                <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+                  Loading...
+       
+                </span>
+                
+              </div>
+              
+            </div>
+            
+          </a>
+          
+   
+        <a href="https://yuushop.f5.si/" target="_blank" class="link-card" data-url="https://yuushop.f5.si/">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/sOFeRLv.jpeg" alt="yuushopのバナー">
+              </img>
+              
+      
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+                yuushop.f5.si
+              </p>
+          
+     
+              <p class="site-desc">
+                shop
+              </p>
+              
+              <div class="status-area">
+                
+      
+              <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+                  Loading...
+                </span>
+      
+              
+              </div>
+              
+            </div>
+            
+          </a>
+          
+          <a href="https://kazutti.f5.si" target="_blank" class="link-card" data-url="https://kazutti.f5.si">
+    
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/xwgpofB.jpeg" alt="kazuttiポートフォリオのバナー">
+              </img>
+              
+            </div>
+         
+            <div class="card-info">
+              
+              <p class="site-url">
+                kazutti.f5.si
+              </p>
+              
+           
+            <p class="site-desc">
+                一応ポートフォリオ
+              </p>
+              
+              <div class="status-area">
+                
+                <span class="status-indicator">
+    
+              </span>
+                
+                <span class="status-text">
+                  Loading...
+                </span>
+                
+     
+              </div>
+              
+            </div>
+            
+          </a>
+          
+          <a href="https://yuuzilol.f5.si" target="_blank" class="link-card" data-url="https://yuuzilol.f5.si">
+            
+       
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/qT5fjUa.jpeg" alt="my first HPのバナー">
+              </img>
+              
+            </div>
+            
+          
+            <div class="card-info">
+              
+              <p class="site-url">
+                yuuzilol.f5.si
+              </p>
+              
+              <p class="site-desc">
+         
+                my first HP
+              </p>
+              
+              <div class="status-area">
+                
+                <span class="status-indicator">
+               
+              </span>
+                
+                <span class="status-text">
+                  Loading...
+                </span>
+                
+              </div>
+  
+            </div>
+            
+          </a>
+          
+          <a href="https://nakanidasu.f5.si/" target="_blank" class="link-card" data-url="https://nakanidasu.f5.si/">
+            
+            <div class="card-image">
+     
+            
+              <img src="https://i.imgur.com/vO3DN8o.jpeg" alt="中田氏サイトのバナー">
+              </img>
+              
+            </div>
+            
+            <div class="card-info">
+          
+     
+              <p class="site-url">
+                nakanidasu.f5.si
+              </p>
+              
+              <p class="site-desc">
+                中田氏
+      
+            </p>
+              
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+              
+   
+                <span class="status-text">
+                  Loading...
+                </span>
+                
+              </div>
+              
+   
+            </div>
+            
+          </a>
+          
+          <a href="https://ramennakata.f5.si/" target="_blank" class="link-card" data-url="https://ramennakata.f5.si/">
+            
+            <div class="card-image">
+              
+      
+            <img src="https://i.imgur.com/CWgo1DU.jpeg" alt="中田氏Discordサーバー用サイトのバナー">
+              </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+           
+            <p class="site-url">
+                ramennakata.f5.si
+              </p>
+              
+              <p class="site-desc">
+                中田氏のdiscordサーバー用
+              </p>
+       
+            
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+                
+             
+            <span class="status-text">
+                  Loading...
+                </span>
+                
+              </div>
+              
+            </div>
+      
+        
+          </a>
+          
+          <a href="https://dozle.f5.si/" target="_blank" class="link-card" data-url="https://dozle.f5.si/">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/KJGEQh6.jpeg" alt="MEMOサイトのバナー">
+     
+            </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+           
+              dozle.f5.si
+              </p>
+              
+              <p class="site-desc">
+                MEMO
+              </p>
+              
+        
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+           
+                Loading...
+                </span>
+                
+              </div>
+              
+            </div>
+            
+         
+          </a>
+          
+          <a href="https://neetclub.f5.si" target="_blank" class="link-card" data-url="https://neetclub.f5.si">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/b4gxFLv.jpeg" alt="QRサイトのバナー">
+              </img>
+      
+            
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+                neetclub.f5.si
+          
+            </p>
+              
+              <p class="site-desc">
+                QR
+              </p>
+              
+              <div class="status-area">
+        
+              
+                <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+                  Loading...
+        
+              </span>
+                
+              </div>
+              
+            </div>
+            
+          </a>
+          
+    
+        <a href="https://isobeyaki.f5.si/" target="_blank" class="link-card" data-url="https://isobeyaki.f5.si/">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/ecJn55b.jpeg" alt="メアドサイトのバナー">
+              </img>
+              
+       
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+                isobeyaki.f5.si
+              </p>
+           
+    
+              <p class="site-desc">
+                メアド
+              </p>
+              
+              <div class="status-area">
+                
+       
+              <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+                  Loading...
+                </span>
+       
+              
+              </div>
+              
+            </div>
+            
+          </a>
+          
+          <a href="https://lunanya.f5.si/" target="_blank" class="link-card" data-url="https://lunanya.f5.si/">
+     
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/6llRdbV.jpeg" alt="Vtuber公式サイトのバナー">
+              </img>
+              
+            </div>
+          
+   
+            <div class="card-info">
+              
+              <p class="site-url">
+                lunanya.f5.si
+              </p>
+              
+            
+            <p class="site-desc">
+                Vtuber公式サイト（空き）
+              </p>
+              
+              <div class="status-area">
+                
+                <span class="status-indicator">
+     
+              </span>
+                
+                <span class="status-text">
+                  Loading...
+                </span>
+                
+      
+              </div>
+              
+            </div>
+            
+          </a>
+          
+          <a href="https://zuzu.f5.si/" target="_blank" class="link-card" data-url="https://zuzu.f5.si/">
+            
+        
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/DTZpAwg.jpeg" alt="一覧サイトのバナー">
+              </img>
+              
+            </div>
+            
+            <div 
+             class="card-info">
+              
+              <p class="site-url">
+                zuzu.f5.si
+              </p>
+              
+              <p class="site-desc">
+            
+              一覧（空き）
+              </p>
+              
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+    
+              
+                <span class="status-text">
+                  Loading...
+                </span>
+                
+              </div>
+       
+            
+            </div>
+            
+          </a>
+          
+          <a href="https://yuuzilolbeans.f5.si/" target="_blank" class="link-card" data-url="https://yuuzilolbeans.f5.si/">
+            
+            <div class="card-image">
+          
+     
+              <img src="https://i.imgur.com/TvTA8gV.jpeg" alt="空きサイトのバナー">
+              </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+ 
+              <p class="site-url">
+                yuuzilolbeans.f5.si
+              </p>
+              
+              <p class="site-desc">
+                空き
+           
+            </p>
+              
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+                
+   
+              <span class="status-text">
+                  Loading...
+                </span>
+                
+              </div>
+              
+        
+            </div>
+            
+          </a>
+          
+          <a href="https://twice.f5.si" target="_blank" class="link-card" data-url="https://twice.f5.si">
+            
+            <div class="card-image">
+              
+           
+            <img src="https://i.imgur.com/5XrALAz.jpeg" alt="稼働状況サイト自身のバナー">
+              </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+ 
+                twice.f5.si
+              </p>
+              
+              <p class="site-desc">
+                稼働状況サイト（これの前)
+              </p>
+            
+   
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+ 
+                  Loading...
+                </span>
+                
+              </div>
+              
+            </div>
+           
+          </a>
+          
+          <a href="https://yuuzon.f5.si" target="_blank" class="link-card" data-url="https://yuuzon.f5.si">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/EV4Yabn.jpeg" alt="yuuzon.f5.siのバナー">
+          
+            </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+                
+              yuuzon.f5.si
+              </p>
+              
+              <p class="site-desc">
+                shop
+              </p>
+              
+             
+              <div class="status-area">
+                
+                <span class="status-indicator">
+                </span>
+                
+                <span class="status-text">
+                
+                Loading...
+                </span>
+                
+              </div>
+              
+            </div>
+            
+          </a>
+    
+       
+        </div>
+        
+        <h2 class="section-title">
+          🔗 相互リンク
+        </h2>
+        
+        <div class="link-grid" id="mutual-link-list">
+          
+          <a href="https://9a.si" target="_blank" class="link-card" data-url="https://9a.si">
+        
+            <div class="card-image">
+              
+              <img src="https://9a.si/9a.si.webp" alt="相互リンク1のバナー">
+              </img>
+              
+            </div>
+            
+ 
+            <div class="card-info">
+              
+              <p class="site-url">
+                9a.si
+              </p>
+              
+              <p 
+              class="site-desc">
+                LunarさんのHPです
+              </p>
+              
+              <div class="status-area">
+                
+                <span class="status-text">
+        
+                  外部サイト
+                </span>
+                
+              </div>
+              
+            </div>
+            
+      
+          </a>
+          
+          <a href="https://yuuzicyber.f5.si" target="_blank" class="link-card" data-url="https://yuuzicyber.f5.si">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/kNkwB9V.jpeg" alt="相互リンク2のバナー">
+              </img>
+   
+            
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+                yuuzicyber.f5.si
+       
+              </p>
+              
+              <p class="site-desc">
+                cyberrrr
+              </p>
+              
+              <div class="status-area">
+     
+            
+                <span class="status-text">
+                  外部サイト
+                </span>
+                
+              </div>
+        
+            
+            </div>
+            
+          </a>
+          
+          <a href="https://9y.f5.si" target="_blank" class="link-card" data-url="https://9y.f5.si">
+            
+            <div class="card-image">
+           
+            
+              <img src="https://i.imgur.com/v82ZGU1.jpeg" alt="相互リンク3のバナー">
+              </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+  
+              <p class="site-url">
+                9y.f5.si
+              </p>
+              
+              <p class="site-desc">
+                本人様より ぜひ見に来てね!
+              </p>
+              
+              <div class="status-area">
+                
+                <span class="status-text">
+                  外部サイト
+                </span>
+    
+              
+              </div>
+              
+            </div>
+            
+          </a>
+          
+          <a href="https://sana.f5.si" target="_blank" class="link-card" data-url="https://sana.f5.si">
+  
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/7ws6z2t.jpeg" alt="相互リンク4のバナー">
+              </img>
+              
+            </div>
+       
+            <div class="card-info">
+              
+              <p class="site-url">
+                sana.f5.si
+              </p>
+              
+         
+              <p class="site-desc">
+                my name is True
+              </p>
+              
+              <div class="status-area">
+                
+                
+                <span class="status-text">
+                  外部サイト
+                </span>
+                
+              </div>
+              
+            </div>
+         
+            
+          </a>
+          
+          <a href="https://ichika.f5.si" target="_blank" class="link-card" data-url="https://ichika.f5.si">
+            
+            <div class="card-image">
+              
+              <img src="https://i.imgur.com/AYrzf26.jpeg" alt="相互リンク5のバナー">
+        
+              </img>
+              
+            </div>
+            
+            <div class="card-info">
+              
+              <p class="site-url">
+              
+              ichika.f5.si
+              </p>
+              
+              <p class="site-desc">
+                見に来てねー!
+              </p>
+              
+              <div class="status-area">
+                
+                <span class="status-text">
+                  外部サイト
+                </span>
+              </div>
+            </div>
+          </a>
+          
+          <a href="https://yuuuuzi.f5.si" target="_blank" class="link-card" data-url="https://yuuuuzi.f5.si">
+            
+            <div class="card-image">
+              <img src="https://i.imgur.com/mMl2G7h.jpeg" alt="相互リンク6のバナー">
+              </img>
+            </div>
+            <div class="card-info">
+              <p class="site-url"> yuuuuzi.f5.si/ </p>
+              <p class="site-desc"> </p>
+              <div class="status-area">
+                <span class="status-text"> 外部サイト </span>
+              </div>
+            </div>
+          </a>
+          
+        </div>
+
+        <h2 class="section-title"> ⭐ Kawaii Gaming </h2>
+        
+        <div class="link-grid" id="another-new-list">
+          <a href="https://kawaiigaming.f5.si" target="_blank" class="link-card">
+            <div class="card-image">
+              <img src="https://i.imgur.com/96Waqq8.jpeg" alt="サイト1のバナー">
+              </img>
+            </div>
+            <div class="card-info">
+              <p class="site-url"> kawaiigaming.f5.si </p>
+              <p class="site-desc"> セクション1の説明文 </p>
+            </div>
+          </a>
+          <a href="【サイト2のURL】" target="_blank" class="link-card">
+            <div class="card-image">
+              <img src="https://i.imgur.com/uNsnPlU.jpeg" alt="サイト2のバナー">
+              </img>
+            </div>
+            <div class="card-info">
+              <p class="site-url"> site2.f5.si </p>
+              <p class="site-desc"> セクション2の説明文 </p>
+            </div>
+          </a>
+        </div>
+        
+        <button id="show-hidden-btn"> さらに表示 </button> 
+
+        <div id="hidden-section">
+          <h2 class="section-title"> 🌟 Yuushop 🌟詳細などは discord:yuuzi8まで </h2>
+          <div class="link-grid">
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/vCLzHs7.jpeg" alt="Google One"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Google One </p>
+                <p class="site-desc"> 500円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/calGKS2.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Microsoft Gift Card </p>
+                <p class="site-desc"> 250円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/e5MHAgW.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Google Play </p>
+                <p class="site-desc"> 500円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/4SJZWsN.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Netflix </p>
+                <p class="site-desc"> 1000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/Jsjc393.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> LINE Pay </p>
+                <p class="site-desc"> 500円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/LZ0yTfg.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Steam Gift Card </p>
+                <p class="site-desc"> 3000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/1J0O2mj.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> PS Gift Card </p>
+                <p class="site-desc"> 8000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/6kjdbiU.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Roblox Robax </p>
+                <p class="site-desc"> 10000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/yWvueXX.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Amazon Prime Gaming </p>
+                <p class="site-desc"> 1500円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/U2Bjiyq.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Apex Coin </p>
+                <p class="site-desc"> 1000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/6BW38eR.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> V-bucks </p>
+                <p class="site-desc"> 2000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/8FCIHoT.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Switch Online+拡張 </p>
+                <p class="site-desc"> 4500円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/CtilLX3.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Minecraft Minecoins </p>
+                <p class="site-desc"> 700円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/aFF81aV.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Xbox Game Pass版 </p>
+                <p class="site-desc"> 2000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/Pg1mHpF.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Apple iTunes Gift Card </p>
+                <p class="site-desc"> 100円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/8qf807R.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Spotify </p>
+                <p class="site-desc"> 200円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/FcRXCo7.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Discord Nitro Basic </p>
+                <p class="site-desc"> 300円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/0PWaDV9.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Discord Nitro </p>
+                <p class="site-desc"> 600円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/jPX9HOZ.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> Windows Licence </p>
+                <p class="site-desc"> 8000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/QZlO9NT.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> VIP ACCESS PASS </p>
+                <p class="site-desc"> 1000円~ </p>
+              </div>
+            </a>
+            <a href="https://yuushop.f5.si" target="_blank" class="link-card">
+              <div class="card-image">
+                <img src="https://i.imgur.com/fys1DlY.jpeg" alt="新しいサイト1"> </img>
+              </div>
+              <div class="card-info">
+                <p class="site-url"> VIP ACCESS PASS Ultimate </p>
+                <p class="site-desc"> 10000円~ </p>
+              </div>
+            </a>
+          </div>
+        </div>
+    `;
+
+    // ページの内容を定義
+    const pages = {
+        'home': homeContent,
+        'profile': `
+            <header>
+                <h1 style="color: #ff9900;">👤 プロフィール</h1>
+                <p>ゲーム実況者としての活動情報です。</p>
+            </header>
+            <h2 class="section-title" style="border-bottom: 2px solid #ff9900;">活動概要</h2>
+            <div style="text-align: left; max-width: 500px; margin: 0 auto; padding: 10px;">
+                <p><strong>活動名:</strong>Yuuzi</p>
+                <p><strong>主な活動:</strong> 最新ゲームの実況、雑談</p>
+                <p><strong>得意なジャンル:</strong> FPS,apex,LOL,minecraftなどなど</p>
+            </div>
+            <h2 class="section-title" style="border-bottom: 2px solid #ff9900;">経歴一覧</h2>
+            <div style="text-align: left; max-width: 500px; margin: 0 auto; padding: 10px;">
+                <p><strong>参加プロジェクト:</strong>マイクラサーバーお湯つ鯖、AN world</p>
+                <p><strong>主な活動:</strong>サーバーの運営、webページを作成、discord管理</p>
+            </div>
+            <h2 class="section-title" style="border-bottom: 2px solid #ff9900;">スポンサー様紹介</h2>
+            <div style="text-align: left; max-width: 500px; margin: 0 auto; padding: 10px;">
+                <p><strong>デバイス:</strong> energy broost</p>
+                <p><strong>その他:</strong> VISAカード、ゲーミングチェア、エッセイ本、パーカーなどなど数多くのブランドを随時展開中</p>
+            </div>
+            <p style="margin-top: 30px; color: #b0b0b0;">2026/1/30　ドメイン取得。</p>
+        `,
+        'links': `
+            <header>
+                <h1 style="color: #99ccff;">🔗 リンク集</h1>
+                <p>各プラットフォームとSNSへのリンクです。</p>
+            </header>
+            <div class="link-grid" style="grid-template-columns: 1fr; max-width: 400px; margin: 30px auto;">
+                <a href="[YouTube URL]" target="_blank" class="link-card">
+                    <div class="card-info"><p class="site-url">YouTubeチャンネル</p></div>
+                </a>
+                <a href="[Twitch URL]" target="_blank" class="link-card">
+                    <div class="card-info"><p class="site-url">Twitch 配信</p></div>
+                </a>
+                <a href="[X/Twitter URL]" target="_blank" class="link-card">
+                    <div class="card-info"><p class="site-url">X (旧Twitter)</p></div>
+                </a>
+                <a href="[Discord URL]" target="_blank" class="link-card">
+                    <div class="card-info"><p class="site-url">Discordサーバー</p></div>
+                </a>
+            </div>
+            <p style="margin-top: 30px; color: #b0b0b0;"></p>
+　　　
+        `
+    };
+
+    /**
+     * コンテンツを切り替える関数
+     * @param {string} pageName - 表示したいページのキー ('home', 'profile' など)
+     */
+    function loadPage(pageName) {
+        // ページ内容をクリア
+        contentArea.innerHTML = ''; 
+        
+        if (pages[pageName]) {
+            // 1. コンテンツの挿入
+            contentArea.innerHTML = pages[pageName];
+            
+            // 2. アクティブボタンのスタイル変更
+            navButtons.forEach(btn => {
+                if (btn.getAttribute('data-page') === pageName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // 3. ブラウザ履歴の更新 (URLのハッシュを変更)
+            // home ページの場合はハッシュを削除し、それ以外はハッシュを追加
+            const newHash = pageName === 'home' ? '' : `#${pageName}`;
+            history.pushState({page: pageName}, '', newHash);
+
+            // 4. ホームページがロードされた場合のみ、既存のスクリプトを再初期化
+            if (pageName === 'home') {
+                // スクリプトの実行を少し遅延させて、DOMの描画を待つ
+                setTimeout(initializeHomePageScripts, 50); 
+            }
+
+            // 5. ページトップへスクロール
+            window.scrollTo(0, 0);
+
+        } else {
+             // 404的なエラーページ表示
+             contentArea.innerHTML = `<header><h1>ページが見つかりません</h1><p>お探しのページは存在しないか、移動されました。</p></header>`;
+        }
+    }
+
+    // ナビゲーションボタンにイベントリスナーを設定
+    navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const page = this.getAttribute('data-page');
+            loadPage(page);
+        });
+    });
+    
+    // ブラウザの「戻る」「進む」ボタンに対応
+    window.addEventListener('popstate', function(event) {
+        // ハッシュからページ名を取得
+        const hash = window.location.hash.replace('#', '');
+        // ハッシュがあればそれを、なければ 'home' をロード
+        loadPage(hash || 'home');
+    });
+
+    // 初期ロード: URLのハッシュがあればそれを、なければ 'home' を表示
+    const initialHash = window.location.hash.replace('#', '');
+    loadPage(initialHash || 'home');
+    
+    // タイトルスクロールの開始 (コンテンツとは独立して動作)
+    scrollTitle();
+});
+
+/* === SPA ロジック END === */
+
+    </script>
+    
+  </body>
+</html>
